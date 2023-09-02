@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../models/student.dart';
 import '../../utils/colors.dart';
 import '../../utils/constants.dart';
+import '../../utils/image_picker/image_picker.dart';
 import '../../validators/validation_functions.dart';
 import '../home/home_screen.dart';
 import '../widgets/text_field_widget/text_field_widget.dart';
@@ -19,7 +20,7 @@ class ScreenRegister extends StatelessWidget {
   final TextEditingController mobileController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final ImagePicker _imagePicker = ImagePicker();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -42,6 +43,7 @@ class ScreenRegister extends StatelessWidget {
                       Positioned(
                         child: IconButton(
                             onPressed: () {
+                              studentViewController.image.value = '';
                               Get.back();
                             },
                             icon: const Icon(
@@ -202,21 +204,16 @@ class ScreenRegister extends StatelessWidget {
       colorText: kFontColorWhite,
       backgroundColor: kThemeColorGreen,
     );
-    image = null;
-    studentViewController.image.value = '';
-    formKey.currentState!.reset();
+    clearForm();
   }
 
-  Future<XFile> imagePicker() async {
-    try {
-      final XFile? image =
-          await _imagePicker.pickImage(source: ImageSource.gallery);
-      if (image == null) {
-        throw Exception("No image was selected.");
-      }
-      return image;
-    } catch (e) {
-      throw Exception(e);
-    }
+  void clearForm() {
+    nameController.clear();
+    ageController.clear();
+    batchController.clear();
+    mobileController.clear();
+    emailController.clear();
+    image = null;
+    studentViewController.image.value = '';
   }
 }

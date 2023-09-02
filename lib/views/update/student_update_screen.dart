@@ -64,6 +64,7 @@ class ScreenEditStduent extends StatelessWidget {
                       Positioned(
                           child: IconButton(
                               onPressed: () {
+                                studentViewController.image.value = '';
                                 Get.back();
                               },
                               icon: const Icon(

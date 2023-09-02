@@ -1,5 +1,4 @@
 import 'package:sqflite/sqflite.dart';
-
 import '../models/student.dart';
 
 class DB {
