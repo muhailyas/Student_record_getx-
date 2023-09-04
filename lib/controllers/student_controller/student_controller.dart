@@ -37,11 +37,7 @@ class StudentViewController extends GetxController {
     List<StudentModel> list = await _db.getStudents();
     List<StudentModel> resultList = list
         .where((student) =>
-            student.name.toLowerCase().contains(searchQuery.toLowerCase()) ||
-            student.age.contains(searchQuery) ||
-            student.batch.contains(searchQuery) ||
-            student.email.contains(searchQuery.toLowerCase()) ||
-            student.mobile.contains(searchQuery))
+            student.name.toLowerCase().contains(searchQuery.toLowerCase()))
         .toList();
     studentList.assignAll(resultList);
   }

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:student_database_getx/controllers/student_controller/student_controller.dart';
 import '../../models/student.dart';
 import '../../utils/colors.dart';
 import '../../utils/constants.dart';
@@ -10,7 +11,7 @@ import '../home/home_screen.dart';
 import '../register/register_screen.dart';
 import '../widgets/text_field_widget/text_field_widget.dart';
 
-class ScreenEditStduent extends StatelessWidget {
+class ScreenEditStduent extends GetView<StudentViewController> {
   ScreenEditStduent({super.key, required this.student});
   final StudentModel student;
   final TextEditingController nameController = TextEditingController();
@@ -35,7 +36,7 @@ class ScreenEditStduent extends StatelessWidget {
     initializingValues();
     return WillPopScope(
       onWillPop: () async {
-        studentViewController.image.value = '';
+        controller.image.value = '';
         return true;
       },
       child: SafeArea(
@@ -64,7 +65,7 @@ class ScreenEditStduent extends StatelessWidget {
                       Positioned(
                           child: IconButton(
                               onPressed: () {
-                                studentViewController.image.value = '';
+                                controller.image.value = '';
                                 Get.back();
                               },
                               icon: const Icon(
@@ -79,10 +80,9 @@ class ScreenEditStduent extends StatelessWidget {
                       height: 200,
                       width: 200,
                       decoration: BoxDecoration(
-                        image: studentViewController.image.value.isNotEmpty
+                        image: controller.image.value.isNotEmpty
                             ? DecorationImage(
-                                image: FileImage(
-                                    File(studentViewController.image.value)),
+                                image: FileImage(File(controller.image.value)),
                                 fit: BoxFit.cover)
                             : null,
                         shape: BoxShape.circle,
@@ -157,7 +157,7 @@ class ScreenEditStduent extends StatelessWidget {
                               onPressed: () async {
                                 image = await imagePicker();
                                 if (image != null) {
-                                  studentViewController.setImage(image!.path);
+                                  controller.setImage(image!.path);
                                 }
                               },
                               icon: const Icon(
@@ -180,7 +180,7 @@ class ScreenEditStduent extends StatelessWidget {
   void validate(BuildContext context) async {
     if (!formKey.currentState!.validate()) {
       return;
-    } else if (studentViewController.image.value.isEmpty) {
+    } else if (controller.image.value.isEmpty) {
       Get.snackbar(
         "Image",
         'Image is required',
@@ -196,11 +196,11 @@ class ScreenEditStduent extends StatelessWidget {
         batch: batchController.text,
         mobile: mobileController.text,
         email: emailController.text,
-        image: studentViewController.image.value);
-    await studentViewController.updateStudent(updatedStudent, student.id!);
+        image: controller.image.value);
+    await controller.updateStudent(updatedStudent, student.id!);
     Get.back();
     image = null;
-    studentViewController.image.value = '';
+    controller.image.value = '';
     Get.snackbar(
       "Update",
       'Updated Successfully',

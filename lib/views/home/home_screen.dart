@@ -14,7 +14,8 @@ final searchController = Get.put(SearchControllerGetx());
 
 class ScreenHome extends StatelessWidget {
   ScreenHome({super.key});
-  final TextEditingController controller = TextEditingController();
+  final TextEditingController searchControllerTextfield =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,7 @@ class ScreenHome extends StatelessWidget {
                         hintText: 'search',
                         autoFocus: true,
                         suffixIcon: Icons.close,
-                        controller: controller,
+                        controller: searchControllerTextfield,
                         function: () {})
                     : null,
               );
@@ -61,7 +62,17 @@ class ScreenHome extends StatelessWidget {
             Expanded(
               child: GetX<StudentViewController>(
                 builder: (controller) {
-                  if (controller.studentList.isEmpty) {
+                  if (controller.studentList.isEmpty &&
+                      searchControllerTextfield.text.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'Data not added yet ?',
+                        style: TextStyle(color: kFontColorWhite),
+                      ),
+                    );
+                  }
+                  if (controller.studentList.isEmpty &&
+                      searchControllerTextfield.text.isNotEmpty) {
                     return const Center(
                       child: Text(
                         "Not found",
@@ -103,11 +114,7 @@ class ScreenHome extends StatelessWidget {
               size: 35,
             ),
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ScreenRegister(),
-                  ));
+              Get.to(ScreenRegister());
             }),
       ),
     );

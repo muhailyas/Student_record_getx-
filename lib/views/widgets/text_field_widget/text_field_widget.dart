@@ -40,8 +40,10 @@ class TextFormFieldWidget extends StatelessWidget {
             : null,
         style: const TextStyle(color: kFontColorWhite),
         onChanged: (value) {
-          if (suffixIcon != null) {
+          if (suffixIcon != null && controller.text.isNotEmpty) {
             studentViewController.searchResult(value);
+          } else if (suffixIcon != null && controller.text.isEmpty) {
+            studentViewController.getStudents();
           }
         },
         decoration: InputDecoration(
